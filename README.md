@@ -21,7 +21,7 @@ Usage
 
 ```
 $ dupfinder compare demo/old demo/new > comparison.log
-2018/11/23 13:36:58 olddir<demo/old/> newdir<demo/new/>
+2018/11/23 13:36:58 olddir<demo/old> newdir<demo/new>
 2018/11/23 13:36:58 Scanning olddir
 2018/11/23 13:36:58 starting initializeMissingMap
 2018/11/23 13:36:58 Scanning newdir
