@@ -2,11 +2,13 @@ package main
 
 import (
 	"crypto/sha1" // nolint:gosec // ok for non-secure comparisons
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
+	"github.com/function61/gokit/fileexists"
 	"github.com/spf13/cobra"
 )
 
@@ -56,6 +58,12 @@ func compare(olddir string, newdir string) error {
 	r := &report{}
 
 	r.info(fmt.Sprintf("olddir<%s> newdir<%s>", olddir, newdir))
+
+	// quick sanity check to see that new dir also exists. if we checked it after walking,
+	// olddir, we might have lots of wasted work
+	if newdirExists, err := fileexists.Exists(newdir); !newdirExists || err != nil {
+		return errors.New("newdir does not exist, or error accessing it")
+	}
 
 	r.info("Scanning olddir")
 
