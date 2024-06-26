@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/function61/gokit/fileexists"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
+
+	"github.com/function61/gokit/fileexists"
+	"github.com/spf13/cobra"
 )
 
 func removeUnchangedFromOld(logReader io.Reader, dry bool) error {

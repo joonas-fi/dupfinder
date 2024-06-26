@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
-	"io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/spf13/cobra"
 )
 
 func removeEmptyDirs(path string, dry bool) error {

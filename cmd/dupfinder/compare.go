@@ -3,10 +3,11 @@ package main
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/spf13/cobra"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/spf13/cobra"
 )
 
 type State struct {
