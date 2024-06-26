@@ -1,5 +1,3 @@
-[![Build Status](https://img.shields.io/travis/joonas-fi/dupfinder.svg?style=for-the-badge)](https://travis-ci.org/joonas-fi/dupfinder)
-[![Download](https://img.shields.io/bintray/v/joonas/dupfinder/main.svg?style=for-the-badge&label=Download)](https://bintray.com/joonas/dupfinder/main/_latestVersion#files)
 
 dupfinder finds duplicate files.
 

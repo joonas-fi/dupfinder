@@ -5,14 +5,17 @@
 	"builders": [
 		{
 			"name": "default",
-			"dockerfile_path": "build-default.Dockerfile",
-			"mount_destination": "/go/src/github.com/function61/dupfinder",
-			"dev_command": [
-				"bash"
-			],
-			"dev_ports": [],
-			"pass_envs": ["BINTRAY_CREDS"],
-			"contextless_build": true
+			"uses": "docker://fn61/buildkit-golang:20240405_0714_856c11bd",
+			"mount_destination": "/workspace",
+			"commands": {
+				"build": ["build-go-project.sh", "--directory=cmd/dupfinder/", "--binary-basename=dupfinder"],
+				"dev": ["bash"]
+			}
 		}
-	]
+	],
+	"os_arches": {
+		"linux-amd64": true,
+		"linux-arm": true,
+		"windows-amd64": true
+	}
 }
