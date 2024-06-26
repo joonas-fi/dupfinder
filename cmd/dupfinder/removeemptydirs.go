@@ -15,7 +15,7 @@ func removeEmptyDirs(path string, dry bool) error {
 		}
 
 		if info.IsDir() {
-			files, err := ioutil.ReadDir(path)
+			files, err := os.ReadDir(path)
 			if err != nil {
 				return err
 			}

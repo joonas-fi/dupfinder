@@ -12,10 +12,10 @@ type recordType string
 
 const (
 	recordTypeAdded     recordType = "+"
-	recordTypeRemoved              = "-"
-	recordTypeSame                 = "="
-	recordTypeInfo                 = "INFO"
-	recordTypeReadError            = "!"
+	recordTypeRemoved   recordType = "-"
+	recordTypeSame      recordType = "="
+	recordTypeInfo      recordType = "INFO"
+	recordTypeReadError recordType = "!"
 )
 
 type report struct{}

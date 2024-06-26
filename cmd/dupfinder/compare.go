@@ -1,7 +1,7 @@
 package main
 
 import (
-	"crypto/sha1"
+	"crypto/sha1" // nolint:gosec // ok for non-secure comparisons
 	"fmt"
 	"io"
 	"os"
@@ -124,12 +124,6 @@ func compareEntrypoint() *cobra.Command {
 	}
 }
 
-func panicIfErr(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
-
 func sha1File(path string) (string, error) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -138,6 +132,7 @@ func sha1File(path string) (string, error) {
 
 	defer f.Close()
 
+	// nolint:gosec // ok for non-secure comparisons
 	hash := sha1.New()
 
 	if _, err := io.Copy(hash, f); err != nil {
