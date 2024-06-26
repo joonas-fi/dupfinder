@@ -17,6 +17,7 @@ func main() {
 	}
 
 	rootCmd.AddCommand(compareEntrypoint())
+	rootCmd.AddCommand(dirDiffEntrypoint())
 	rootCmd.AddCommand(removeEmptyDirsEntrypoint())
 	rootCmd.AddCommand(removeUnchangedFromOldEntrypoint())
 	rootCmd.AddCommand(removeUnchangedFromNewEntrypoint())
