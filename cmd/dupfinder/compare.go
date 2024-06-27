@@ -5,8 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/function61/gokit/fileexists"
 	"github.com/spf13/cobra"
@@ -68,7 +70,7 @@ func compare(olddir string, newdir string) error {
 	r.info("Scanning olddir")
 
 	if err := filepath.Walk(olddir, stopOnErrors(func(path string, info os.FileInfo) error {
-		hash, err := sha1File(path)
+		hash, err := sha1File(path, info)
 		if err != nil {
 			return err
 		}
@@ -87,7 +89,7 @@ func compare(olddir string, newdir string) error {
 	r.info("Scanning newdir")
 
 	if err := filepath.Walk(newdir, stopOnErrors(func(newPath string, info os.FileInfo) error {
-		hash, err := sha1File(newPath)
+		hash, err := sha1File(newPath, info)
 		if err != nil {
 			// TODO: configurable dontStopOnError
 			r.readError(newPath, err)
@@ -132,22 +134,39 @@ func compareEntrypoint() *cobra.Command {
 	}
 }
 
-func sha1File(path string) (string, error) {
-	f, err := os.Open(path)
+func sha1File(path string, fi os.FileInfo) (string, error) {
+	contentToRead, err := func() (io.ReadCloser, error) {
+		if isSymlink(fi) {
+			linkTarget, err := os.Readlink(path)
+			if err != nil {
+				return nil, err
+			}
+
+			// synthesize symlink target as a file content so it can be digested like "normal file"
+			symlinkContent := fmt.Sprintf("(symlink: %s)", linkTarget)
+
+			return io.NopCloser(strings.NewReader(symlinkContent)), nil
+		} else {
+			return os.Open(path)
+		}
+	}()
 	if err != nil {
 		return "", err
 	}
-
-	defer f.Close()
+	defer contentToRead.Close()
 
 	// nolint:gosec // ok for non-secure comparisons
 	hash := sha1.New()
 
-	if _, err := io.Copy(hash, f); err != nil {
+	if _, err := io.Copy(hash, contentToRead); err != nil {
 		return "", err
 	}
 
 	hashHex := fmt.Sprintf("%x", hash.Sum(nil))
 
 	return hashHex, nil
+}
+
+func isSymlink(fi os.FileInfo) bool {
+	return fi.Mode()&fs.ModeSymlink != 0x00
 }
